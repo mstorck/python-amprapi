@@ -26,6 +26,7 @@ import sys
 edge_router_ip = sys.argv[-1]
 ssh_port = 22
 username = None
+distance = 210
 
 # blacklist BGP-announced networks with direct-routing agreements
 hamwan_dstaddresses = ["44.24.240.0/20", "44.103.0.0/19", "44.34.128.0/21"]
@@ -150,7 +151,7 @@ def main():
             commands.append("# adding new and modified routes")
         for dstaddress, interface in routes_to_add:
             commands.append("/interface ipip add !keepalive clamp-tcp-mss=yes local-address=%s name=ampr-%s remote-address=%s" % (edge_router_ip, interface, interface))
-            commands.append("/ip route add dst-address=%s gateway=ampr-%s distance=30" % (dstaddress, interface))
+            commands.append("/ip route add dst-address=%s gateway=ampr-%s distance=%s" % (dstaddress, interface, distance))
             commands.append("/ip neighbor discovery set ampr-%s discover=no" % (interface))
 
         if "-v" in sys.argv:
