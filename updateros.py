@@ -143,7 +143,7 @@ def main():
                     edge_router_ip, interface, entry['gatewayIP'],
                     "AMPR last updated %s, added %s" % (
                         entry['updated'].date(), date.today())))
-            commands.append("/ip route add dst-address=%s gateway=%s distance=30" % (entry.network(), interface))
+            commands.append("/ip route add dst-address=%s gateway=%s distance=%s" % (entry.network(), interface, distance))
             commands.append("/ip neighbor discovery set %s discover=no" % (interface))
 
         if "-v" in sys.argv:
