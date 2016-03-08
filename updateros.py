@@ -28,6 +28,7 @@ edge_router_ip = sys.argv[-1]
 ssh_port = 22
 username = None
 distance = 30
+ampr_source = "44.128.0.1" # replace with a 44net address which exists on your host
 
 # blacklist BGP-announced networks with direct-routing agreements
 bgp_networks = [
@@ -157,7 +158,7 @@ def main():
                     edge_router_ip, interface, entry['gatewayIP'],
                     "AMPR last updated %s, added %s" % (
                         entry['updated'].date(), date.today())))
-            commands.append("/ip route add dst-address=%s gateway=%s distance=%s" % (entry.network(), interface, distance))
+            commands.append("/ip route add dst-address=%s gateway=%s distance=%s pref-src=%s" % (entry.network(), interface, distance, ampr_source))
             commands.append("/ip neighbor discovery set %s discover=no" % (interface))
 
         if "-v" in sys.argv:
